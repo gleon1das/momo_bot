@@ -2,8 +2,8 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import MinMaxScaler
+#from sklearn.linear_model import LinearRegression
+#from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import plotly.express as px
@@ -124,7 +124,7 @@ if modes == "Generator":
 
 
     if st.sidebar.button("Train Generator Model") and done:
-
+        """
         st.header("Generator Model Training")
         # Prepare data for generator training
         with st.spinner("Training in progress..."):
@@ -187,7 +187,7 @@ if modes == "Generator":
             # Show synthetic data
             st.header("Synthetic Data")
             st.dataframe(synthetic_data)
-
+            """
 elif modes == "Prediction":
     # Prediction mode
     st.sidebar.header("Prediction Settings")
@@ -222,7 +222,7 @@ elif modes == "Prediction":
 
 
     if st.sidebar.button("Train Prediction Model") and done:
-        pass
+        """
 
         # Prepare data for regression
         X = data[["Open", "High", "Low", "Volume", "SMA", "LMA"]]
@@ -257,3 +257,4 @@ elif modes == "Prediction":
             st.plotly_chart(fig)
             st.write("## Predicted Prices")
             st.dataframe(prediction_df)
+        """
