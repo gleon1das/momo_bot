@@ -1,0 +1,8 @@
+streamlit~=1.22.0
+yfinance
+pandas
+numpy
+sklearn
+tensorflow
+matplotlib~=3.6.3
+plotly
