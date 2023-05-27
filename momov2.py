@@ -9,9 +9,9 @@ import tensorflow as tf
 import plotly.express as px
 
 
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+#def local_css(file_name):
+#    with open(file_name) as f:
+#        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
 # Set title
@@ -27,8 +27,8 @@ hide_st_style = """
             """
 
 
-st.markdown(hide_st_style, unsafe_allow_html=True)
-local_css("style/style.css")
+#st.markdown(hide_st_style, unsafe_allow_html=True)
+#local_css("style/style.css")
 
 st.markdown("""
 <style>
@@ -124,70 +124,7 @@ if modes == "Generator":
 
 
     if st.sidebar.button("Train Generator Model") and done:
-        """
-        st.header("Generator Model Training")
-        # Prepare data for generator training
-        with st.spinner("Training in progress..."):
-            # Prepare data for generator training
-            #features = data.drop(columns=["Date"]).values
-            features = data.values
-            scaler = MinMaxScaler()
-            scaled_features = scaler.fit_transform(features)
-
-            # Train VAE model
-            latent_dim = 2  # Number of latent dimensions
-            original_dim = features.shape[1]  # Number of original dimensions
-
-            # Encoder
-            encoder_input = tf.keras.Input(shape=(original_dim,))
-            encoder_hidden = tf.keras.layers.Dense(10, activation="relu")(encoder_input)
-            z_mean = tf.keras.layers.Dense(latent_dim)(encoder_hidden)
-            z_log_var = tf.keras.layers.Dense(latent_dim)(encoder_hidden)
-
-
-            # Sampling function
-            def sampling(args):
-                z_mean, z_log_var = args
-                epsilon = tf.random.normal(shape=(tf.shape(z_mean)[0], latent_dim), mean=0., stddev=1.)
-                return z_mean + tf.math.exp(z_log_var / 2) * epsilon
-
-
-            z = tf.keras.layers.Lambda(sampling)([z_mean, z_log_var])
-
-            # Decoder
-            decoder_hidden = tf.keras.layers.Dense(10, activation="relu")(z)
-            decoder_output = tf.keras.layers.Dense(original_dim)(decoder_hidden)
-
-            # VAE model
-            vae = tf.keras.Model(encoder_input, decoder_output)
-
-            # VAE loss
-            reconstruction_loss = tf.keras.losses.mean_squared_error(encoder_input, decoder_output)
-            kl_loss = -0.5 * tf.add_n(1 + z_log_var - tf.math.square(z_mean) - tf.math.exp(z_log_var), axis=-1)
-            vae_loss = np.mean(reconstruction_loss + kl_loss)
-            vae.add_loss(vae_loss)
-            vae.compile(optimizer="adam")
-
-            # Train VAE
-            vae.fit(scaled_features, scaled_features, epochs=iterations, batch_size=32)
-
-            # Generate synthetic data
-            synthetic_latent = np.random.normal(size=(n_samples, latent_dim))
-            synthetic_features = vae.decoder.predict(synthetic_latent)
-            synthetic_data = pd.DataFrame(scaler.inverse_transform(synthetic_features), columns=data.columns[1:])
-
-            # Plot MSE values
-            mse_values = np.mean(np.square(features - synthetic_features), axis=1)
-            plt.plot(range(1, iterations + 1), mse_values)
-            plt.xlabel("Iterations")
-            plt.ylabel("MSE")
-            plt.title("Generator Model Training - MSE")
-            st.pyplot()
-
-            # Show synthetic data
-            st.header("Synthetic Data")
-            st.dataframe(synthetic_data)
-            """
+        pass
 elif modes == "Prediction":
     # Prediction mode
     st.sidebar.header("Prediction Settings")
@@ -222,39 +159,4 @@ elif modes == "Prediction":
 
 
     if st.sidebar.button("Train Prediction Model") and done:
-        """
-
-        # Prepare data for regression
-        X = data[["Open", "High", "Low", "Volume", "SMA", "LMA"]]
-        y = data["Close"]
-
-        # Train prediction model
-        prediction_model = LinearRegression()
-        prediction_model.fit(X, y)
-
-        # Get prediction data from Yahoo Finance API
-        prediction_data = yf.download(symbol, start=prediction_date, end=prediction_date, interval=interval)
-        prediction_data["SMA"] = prediction_data["Close"].rolling(short_ma).mean()
-        prediction_data["LMA"] = prediction_data["Close"].rolling(long_ma).mean()
-
-        if prediction_data.empty:
-            st.warning("No data available for the selected prediction date.")
-        else:
-            prediction_X = prediction_data[["Open", "High", "Low", "Volume", "SMA", "LMA"]]
-            predictions = prediction_model.predict(prediction_X)
-
-            # Create DataFrame with predicted prices
-            prediction_df = pd.DataFrame({"Date": prediction_data.index, "Predicted Close": predictions})
-            prediction_df.set_index("Date", inplace=True)
-
-            # Create plot using Plotly Express
-            fig = px.line(data, x=data.index, y=["Close", "SMA", "LMA"], labels={"value": "Price", "variable": "Metric"},
-                          title=f"{symbol} Price and Moving Averages")
-            fig.add_scatter(x=prediction_df.index, y=prediction_df["Predicted Close"], mode="lines", name="Predicted Close")
-            fig.update_layout(legend=dict(x=0, y=1), margin=dict(l=20, r=20, t=60, b=20), height=500)
-
-            # Show plot and predictions in Streamlit app
-            st.plotly_chart(fig)
-            st.write("## Predicted Prices")
-            st.dataframe(prediction_df)
-        """
+        pass
