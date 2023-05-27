@@ -4,10 +4,7 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import mean_squared_error
 import matplotlib.pyplot as plt
-from sklearn.mixture import GaussianMixture
-from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 import plotly.express as px
 
@@ -81,6 +78,7 @@ st.markdown('<h3 style="color: orange;">❗ Currently this app is used to displa
 
 # Modes selection
 modes = st.sidebar.radio("Select Mode", ("Generator", "Prediction"))
+done = False
 
 if modes == "Generator":
     # Generator mode
@@ -125,7 +123,8 @@ if modes == "Generator":
 
 
 
-    if st.sidebar.button("Train Generator Model"):
+    if st.sidebar.button("Train Generator Model") and done:
+
         st.header("Generator Model Training")
         # Prepare data for generator training
         with st.spinner("Training in progress..."):
@@ -222,7 +221,8 @@ elif modes == "Prediction":
 
 
 
-    if st.sidebar.button("Train Prediction Model"):
+    if st.sidebar.button("Train Prediction Model") and done:
+        pass
 
         # Prepare data for regression
         X = data[["Open", "High", "Low", "Volume", "SMA", "LMA"]]
