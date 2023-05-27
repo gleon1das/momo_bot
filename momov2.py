@@ -125,6 +125,8 @@ if modes == "Generator":
 
     if st.sidebar.button("Train Generator Model") and done:
         pass
+
+
 elif modes == "Prediction":
     # Prediction mode
     st.sidebar.header("Prediction Settings")
